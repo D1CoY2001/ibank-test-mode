@@ -29,13 +29,29 @@ jobs:
         run: sudo rm -f /usr/bin/chromedriver
 
       - name: Start application
-        run: java -jar artifacts/app-ibank.jar -P:profile=test &
+        run: |
+          java -jar artifacts/app-ibank.jar -P:profile=test > app.log 2>&1 &
+          echo $! > app.pid
 
       - name: Wait for application
-        run: sleep 5
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sSf http://localhost:9999 > /dev/null; then
+              echo "Application is ready"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Application did not start on port 9999"
+          cat app.log
+          exit 1
 
       - name: Run tests
-        run: ./gradlew test --stacktrace -Dselenide.browser=chrome -Dselenide.chromeoptions.args=--no-sandbox,--disable-dev-shm-usage
+        run: ./gradlew test -Dselenide.browser=chrome -Dselenide.chromeoptions.args=--no-sandbox,--disable-dev-shm-usage
+
+      - name: Show application log
+        if: always()
+        run: cat app.log
 
       - name: Print test reports
         if: always()
