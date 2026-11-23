@@ -1,34 +1,19 @@
-\# Автотесты: авторизация в интернет-банке
+# ibank-test-mode
 
+Автоматизированные тесты авторизации интернет-банка с использованием Selenide, Rest Assured и GitHub Actions.
 
+## Запуск приложения
 
-Автоматизированные UI-тесты на Selenide для проверки авторизации пользователей с разными статусами.
-
-
-
-\## Запуск
-
-
-
-```bash
-
-java -jar artifacts/app-ibank.jar -P:profile=test
-
-./gradlew test
-
+```powershell
+Start-Process java -ArgumentList '-jar','artifacts/app-ibank.jar','-P:profile=test'
 ```
 
+## Запуск тестов
 
+```powershell
+./gradlew test
+```
 
-\## Покрытые сценарии
+## CI
 
-
-
-\- Успешная авторизация активного пользователя.
-
-\- Блокировка входа для заблокированного пользователя.
-
-\- Ошибка при неверном пароле.
-
-\- Ошибка при входе несуществующего пользователя.
-
+[![Java CI](https://github.com/D1CoY2001/ibank-test-mode/actions/workflows/gradle.yml/badge.svg)](https://github.com/D1CoY2001/ibank-test-mode/actions/workflows/gradle.yml)
