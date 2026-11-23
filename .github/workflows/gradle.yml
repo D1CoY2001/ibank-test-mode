@@ -35,4 +35,4 @@ jobs:
         run: sleep 5
 
       - name: Run tests
-     run: ./gradlew test --stacktrace -Dselenide.browser=chrome -Dselenide.chromeoptions.args=--no-sandbox,--disable-dev-shm-usage
+        run: ./gradlew test --stacktrace -Dselenide.browser=chrome -Dselenide.chromeoptions.args=--no-sandbox,--disable-dev-shm-usage
