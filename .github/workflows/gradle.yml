@@ -18,6 +18,13 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
+      - name: Install Chrome
+        run: |
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg
+          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
       - name: Start application
         run: java -jar artifacts/app-ibank.jar -P:profile=test &
 
@@ -25,4 +32,4 @@ jobs:
         run: sleep 5
 
       - name: Run tests
-        run: ./gradlew test
+        run: ./gradlew test -Dselenide.browser=chrome -Dselenide.chromeoptions.args=--no-sandbox,--disable-dev-shm-usage
