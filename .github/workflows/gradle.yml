@@ -1,0 +1,28 @@
+name: Java CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Start application
+        run: java -jar artifacts/app-ibank.jar -P:profile=test &
+
+      - name: Wait for application
+        run: sleep 5
+
+      - name: Run tests
+        run: ./gradlew test
