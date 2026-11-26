@@ -42,5 +42,6 @@ out/
 ### Exclusions ###
 !gradle/wrapper/gradle-wrapper.jar
 !artifacts/app-ibank.jar
+!artifacts/app-replan-delivery.jar
 !**/src/main/**
 !**/src/test/**
