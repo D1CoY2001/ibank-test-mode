@@ -1,7 +1,6 @@
 package ru.netology.ibank.test;
 
 import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.ibank.data.RegistrationDto;
@@ -23,7 +22,8 @@ public class AuthTest {
 
         login(user.getLogin(), user.getPassword());
 
-        $("h2").shouldBe(Condition.visible);
+        $("h2").shouldBe(Condition.visible)
+                .shouldHave(Condition.text("Личный кабинет"));
     }
 
     @Test
@@ -34,27 +34,29 @@ public class AuthTest {
 
         $("[data-test-id=error-notification]")
                 .shouldBe(Condition.visible)
-                .shouldHave(Condition.text("\u041e\u0448\u0438\u0431\u043a\u0430! \u041f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044c \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d"));
+                .shouldHave(Condition.text("Ошибка! Пользователь заблокирован"));
     }
 
     @Test
     void shouldNotLoginWithInvalidPassword() {
-        RegistrationDto user = UserGenerator.generateActiveUser();
+        RegistrationDto user = UserGenerator.generateUserWithWrongPassword();
 
-        login(user.getLogin(), "wrong-password");
+        login(user.getLogin(), user.getPassword());
 
         $("[data-test-id=error-notification]")
                 .shouldBe(Condition.visible)
-                .shouldHave(Condition.text("\u041e\u0448\u0438\u0431\u043a\u0430! \u041d\u0435\u0432\u0435\u0440\u043d\u043e \u0443\u043a\u0430\u0437\u0430\u043d \u043b\u043e\u0433\u0438\u043d \u0438\u043b\u0438 \u043f\u0430\u0440\u043e\u043b\u044c"));
+                .shouldHave(Condition.text("Ошибка! Неверно указан логин или пароль"));
     }
 
     @Test
     void shouldNotLoginWithUnknownUser() {
-        login("unknown-user", "any-password");
+        RegistrationDto user = UserGenerator.generateUnknownUser();
+
+        login(user.getLogin(), user.getPassword());
 
         $("[data-test-id=error-notification]")
                 .shouldBe(Condition.visible)
-                .shouldHave(Condition.text("\u041e\u0448\u0438\u0431\u043a\u0430! \u041d\u0435\u0432\u0435\u0440\u043d\u043e \u0443\u043a\u0430\u0437\u0430\u043d \u043b\u043e\u0433\u0438\u043d \u0438\u043b\u0438 \u043f\u0430\u0440\u043e\u043b\u044c"));
+                .shouldHave(Condition.text("Ошибка! Неверно указан логин или пароль"));
     }
 
     private void login(String login, String password) {

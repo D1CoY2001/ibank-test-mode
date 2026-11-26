@@ -36,4 +36,21 @@ public final class UserGenerator {
 
         return user;
     }
+
+    public static RegistrationDto generateUserWithWrongPassword() {
+        RegistrationDto user = generateActiveUser();
+        return new RegistrationDto(
+                user.getLogin(),
+                faker.internet().password(13, 16),
+                "active"
+        );
+    }
+
+    public static RegistrationDto generateUnknownUser() {
+        return new RegistrationDto(
+                faker.name().username(),
+                faker.internet().password(8, 12),
+                "active"
+        );
+    }
 }
