@@ -12,11 +12,6 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class AuthTest {
 
-    static {
-        Configuration.browser = "chrome";
-    Configuration.headless = true;
-    }
-
     @BeforeEach
     void setUp() {
         open("http://localhost:9999");
