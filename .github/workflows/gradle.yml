@@ -19,7 +19,7 @@ jobs:
           java-version: '11'
 
       - name: Start application
-        run: java -jar artifacts/app-ibank.jar -P:profile=test > app.log 2>&1 &
+        run: java -jar artifacts/app-ibank.jar -P:profile=test &
 
       - name: Run tests
         run: ./gradlew test -Dselenide.browser=chrome -Dselenide.chromeoptions.args=--no-sandbox,--disable-dev-shm-usage
